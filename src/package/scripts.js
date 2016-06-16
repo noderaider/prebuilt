@@ -10,7 +10,7 @@ const clean = (targets = []) => `rimraf ${targets.map(x => x.join(' '))}`
 const babel = (targets = []) => targets.map(([ src, dest, { isDir = true, watch = false } = {} ]) => `babel ${src} ${isDir ? '-d' : '-o'} ${dest}${watch ? ' --watch' : ''}`).join(' && ')
 
                           /** START SCRIPT STARTS BUILD WITH WATCHING ENABLED (USEFUL WITH NPM LINK) */
-export default ({}) => ({ 'start': 'run-p -lnc build-watch'
+export default ({}) => ({ 'start': 'run-p -lnc build-watch test-watch'
 
                           /** CLEAN EVERYTHING PRE BUILD */
                         , 'clean': 'run-p clean-lib clean-doc clean-test'

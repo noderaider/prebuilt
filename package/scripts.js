@@ -44,7 +44,7 @@ var babel = function babel() {
 exports.default = function (_ref3) {
                           _objectDestructuringEmpty(_ref3);
 
-                          return { 'start': 'run-p -lnc build-watch'
+                          return { 'start': 'run-p -lnc build-watch test-watch'
 
                                                     /** CLEAN EVERYTHING PRE BUILD */
                                                     , 'clean': 'run-p clean-lib clean-doc clean-test',
