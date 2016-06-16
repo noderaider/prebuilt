@@ -1,6 +1,6 @@
 # prebuilt
 
-**Package and deploy prebuilt versions of node_modules to bypass gcc node-gyp issues. This is another level up from node-pre-gyp, if one of your target node_modules does not precompile, you can use this to bundle versions of that entire library.**
+**A simple CLI/API tool to package and deploy prebuilt versions of node_modules packages to bypass gcc node-gyp issues. This is another level up from node-pre-gyp, if one of your target node_modules does not precompile, you can use this to bundle versions of that entire library.**
 
 
 [![Build Status](https://travis-ci.org/noderaider/prebuilt.svg?branch=master)](https://travis-ci.org/noderaider/prebuilt)
@@ -9,26 +9,56 @@
 [![NPM](https://nodei.co/npm/prebuilt.png?stars=true&downloads=true)](https://nodei.co/npm/prebuilt/)
 
 
-## Install
+## Install (For npm script or API usage)
 
-`npm i -S prebuilt`
+`npm i -D prebuilt`
 
+## Install (global)
+
+`npm i -g prebuilt`
 
 ## Usage
 
-**Package prebuilt binaries on a VM:**
+#### CLI / NPM scripts
 
-```js
+**Pack an installed (and built) package from a VM:**
+
+```bash
+prebuilt --pack package_name
+
+# shorthand
 prebuilt -p package_name
 ```
 
-**Install prebuilt binaries on a machine, node version, platform and bitness will be handled automatically:**
+**Install prebuilt packages on a machine, node version, platform and bitness will be handled automatically:**
 
-```js
+```bash
+prebuilt --install package_name
+
+# shorthand
 prebuilt -i package_name
 ```
 
-**This project is in active development. Please come back in a couple of weeks.**
+
+#### API
+
+```js
+import { pack, install } from 'prebuilt'
+import util from 'util'
+
+const printResult = x => console.log(util.inspect(x))
+const printError = err => console.error(err)
+
+/** Pack an installed package for later distribution */
+pack('package_name')
+  .then(printResult)
+  .catch(printError)
+
+/** Install a prebuilt packed package */
+install('package_name')
+  .then(printResult)
+  .catch(printError)
+```
 
 ---
 
@@ -39,14 +69,120 @@ prebuilt -i package_name
 
 # TOC
    - [lib](#lib)
+     - [#default](#lib-default)
+     - [#pack](#lib-pack)
+     - [#install](#lib-install)
+     - [#query](#lib-query)
 <a name=""></a>
  
 <a name="lib"></a>
 # lib
-should have default function export.
+should exist.
 
 ```js
-should.exist(lib.default);
-lib.default.should.be.a('function');
+return should.exist(lib);
 ```
 
+<a name="lib-default"></a>
+## #default
+should not have a default function export.
+
+```js
+return should.not.exist(lib.default);
+```
+
+<a name="lib-pack"></a>
+## #pack
+should exist.
+
+```js
+return should.exist(pack);
+```
+
+should be a function.
+
+```js
+return pack.should.be.a('function');
+```
+
+should not throw for non-existant package name.
+
+```js
+return function () {
+  return pack().should.be.rejected;
+}.should.not.throw();
+```
+
+should reject non-existant package name.
+
+```js
+return pack().should.be.rejected;
+```
+
+should reject invalid package name.
+
+```js
+return pack('invalid-package').should.be.rejected;
+```
+
+should pack valid package.
+
+```js
+return pack('fake-package').should.be.fulfilled;
+```
+
+should create prebuilt.
+
+```js
+pack('fake-package').then(function () {
+  return access(fakePackagePath);
+}).catch(function (err) {
+  console.error(util.inspect(err));
+  should.not.exist(err);
+}).finally(function () {
+  done();
+});
+```
+
+<a name="lib-install"></a>
+## #install
+should exist.
+
+```js
+return should.exist(install);
+```
+
+should be a function.
+
+```js
+return install.should.be.a('function');
+```
+
+should not throw for non-existant package name.
+
+```js
+return function () {
+  return install().should.be.rejected;
+}.should.not.throw();
+```
+
+should reject non-existant package name.
+
+```js
+return install().should.be.rejected;
+```
+
+should reject invalid package name.
+
+```js
+return install('invalid-package').should.be.rejected;
+```
+
+should install valid package.
+
+```js
+return install('fake-package').should.be.fulfilled;
+```
+
+<a name="lib-query"></a>
+## #query
