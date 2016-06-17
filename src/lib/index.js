@@ -6,21 +6,17 @@ const rimraf = Promise.promisify(require('rimraf'))
 const mkdirp = Promise.promisify(require('mkdirp'))
 const ncp = Promise.promisify(require('ncp').ncp)
 
+const testPath = x => access(x).then(() => ({ exists: true, resolved: x })).catch(() => ({ exists: false }))
+
 const getModulePath = packageName => {
   if(!packageName) return Promise.reject(new Error('packageName is required.'))
   const testPaths = module.parent.paths.map(x => path.join(x, packageName))
-  return Promise.all(testPaths.map(x => {
-      return access(x)
-        .then(() => ({ found: true, resolved: x }))
-        .catch(() => ({ found: false }))
-    }))
+  return Promise.all(testPaths.map(testPath))
     .then(results => {
       for(let result of results) {
-        if(result.found) {
+        if(result.exists)
           return result.resolved
-        }
       }
-
       throw new Error(`Could not locate packageName ${packageName}`)
     })
 }
