@@ -69,7 +69,11 @@ install('package_name')
 
 RESULT => {"exists":false}
 RESULT => {"exists":true,"resolved":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\fake-package"}
+pack: running node-gyp for package
+pack: node-gyp finished executing: [object Object]
 RESULT => {"exists":true,"resolved":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\fake-package"}
+pack: running node-gyp for package
+pack: node-gyp finished executing: [object Object]
 extracting package at prebuilt/win32/x64/v6.2.2/invalid-package.7z to C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\invalid-package...
 extracting package at prebuilt/win32/x64/v6.2.2/fake-package.7z to C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package...
 # TOC
