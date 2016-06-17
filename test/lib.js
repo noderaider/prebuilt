@@ -28,8 +28,12 @@ describe('lib', () => {
     it('should not throw for non-existant package name', () => (() => pack().should.be.rejected).should.not.throw())
     it('should reject non-existant package name', () => pack().should.be.rejected)
     it('should reject invalid package name', () => pack('invalid-package').should.be.rejected)
-    it('should pack valid package', () => pack('fake-package').should.be.fulfilled)
+    it('should pack valid package', function() {
+      this.timeout(5000)
+      return pack('fake-package').should.be.fulfilled
+    })
     it('should create prebuilt', function(done) {
+      this.timeout(5000)
       pack('fake-package')
         .then(() => {
           return access(fakePackagePath)
