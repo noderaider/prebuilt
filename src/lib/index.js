@@ -42,7 +42,7 @@ const getZipTo = (packageName, root) => `prebuilt/${process.platform}/${process.
 
 function executeGyp(commands, { msvs_version, cwd }) {
   return new Promise((resolve, reject) => {
-    const { error, stdio, stdout, status, signal, output  } = cp.spawnSync(path.resolve(__dirname, '..', 'node_modules', '.bin', `node-gyp${isWin ? '.cmd' : ''}`), [ ...commands, `--msvs_version=${msvs_version}` ], { cwd: path.resolve(cwd), encoding: 'utf8' })
+    const { error, stdio, stdout, status, signal, output  } = cp.spawnSync(path.resolve(cwd, '..', '.bin', `node-gyp${isWin ? '.cmd' : ''}`), [ ...commands, `--msvs_version=${msvs_version}` ], { cwd: path.resolve(cwd), encoding: 'utf8' })
     if(error)
       return reject(error)
     resolve(stdio)
