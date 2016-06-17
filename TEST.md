@@ -1,3 +1,185 @@
+TESTING PATHS => C:\Users\ColeChamberlain\noderaider\prebuilt\test\node_modules\invalid-package, C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\invalid-package, C:\Users\ColeChamberlain\noderaider\node_modules\invalid-package, C:\Users\ColeChamberlain\node_modules\invalid-package, C:\Users\node_modules\invalid-package
+module => Module {
+  id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\lib\\index.js',
+  exports: 
+   { pack: [Function: pack],
+     install: [Function: install],
+     query: [Function: query] },
+  parent: 
+   Module {
+     id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\test\\lib.js',
+     exports: {},
+     parent: 
+      Module {
+        id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\mocha\\lib\\mocha.js',
+        exports: [Object],
+        parent: [Object],
+        filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\mocha\\lib\\mocha.js',
+        loaded: true,
+        children: [Object],
+        paths: [Object] },
+     filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\test\\lib.js',
+     loaded: true,
+     children: [ [Object], [Object], [Object], [Object], [Object], [Circular] ],
+     paths: 
+      [ 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\test\\node_modules',
+        'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules',
+        'C:\\Users\\ColeChamberlain\\noderaider\\node_modules',
+        'C:\\Users\\ColeChamberlain\\node_modules',
+        'C:\\Users\\node_modules' ] },
+  filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\lib\\index.js',
+  loaded: true,
+  children: 
+   [ Module {
+       id: 'C:\\Users\\ColeChamberlain\\noderaider\\es-7z\\lib\\index.js',
+       exports: [Object],
+       parent: [Circular],
+       filename: 'C:\\Users\\ColeChamberlain\\noderaider\\es-7z\\lib\\index.js',
+       loaded: true,
+       children: [Object],
+       paths: [Object] },
+     Module {
+       id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\ncp\\lib\\ncp.js',
+       exports: [Object],
+       parent: [Circular],
+       filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\ncp\\lib\\ncp.js',
+       loaded: true,
+       children: [],
+       paths: [Object] } ],
+  require: [Function],
+  paths: 
+   [ 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\lib\\node_modules',
+     'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules',
+     'C:\\Users\\ColeChamberlain\\noderaider\\node_modules',
+     'C:\\Users\\ColeChamberlain\\node_modules',
+     'C:\\Users\\node_modules' ] }
+TESTING PATHS => C:\Users\ColeChamberlain\noderaider\prebuilt\test\node_modules\fake-package, C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package, C:\Users\ColeChamberlain\noderaider\node_modules\fake-package, C:\Users\ColeChamberlain\node_modules\fake-package, C:\Users\node_modules\fake-package
+module => Module {
+  id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\lib\\index.js',
+  exports: 
+   { pack: [Function: pack],
+     install: [Function: install],
+     query: [Function: query] },
+  parent: 
+   Module {
+     id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\test\\lib.js',
+     exports: {},
+     parent: 
+      Module {
+        id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\mocha\\lib\\mocha.js',
+        exports: [Object],
+        parent: [Object],
+        filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\mocha\\lib\\mocha.js',
+        loaded: true,
+        children: [Object],
+        paths: [Object] },
+     filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\test\\lib.js',
+     loaded: true,
+     children: [ [Object], [Object], [Object], [Object], [Object], [Circular] ],
+     paths: 
+      [ 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\test\\node_modules',
+        'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules',
+        'C:\\Users\\ColeChamberlain\\noderaider\\node_modules',
+        'C:\\Users\\ColeChamberlain\\node_modules',
+        'C:\\Users\\node_modules' ] },
+  filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\lib\\index.js',
+  loaded: true,
+  children: 
+   [ Module {
+       id: 'C:\\Users\\ColeChamberlain\\noderaider\\es-7z\\lib\\index.js',
+       exports: [Object],
+       parent: [Circular],
+       filename: 'C:\\Users\\ColeChamberlain\\noderaider\\es-7z\\lib\\index.js',
+       loaded: true,
+       children: [Object],
+       paths: [Object] },
+     Module {
+       id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\ncp\\lib\\ncp.js',
+       exports: [Object],
+       parent: [Circular],
+       filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\ncp\\lib\\ncp.js',
+       loaded: true,
+       children: [],
+       paths: [Object] } ],
+  require: [Function],
+  paths: 
+   [ 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\lib\\node_modules',
+     'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules',
+     'C:\\Users\\ColeChamberlain\\noderaider\\node_modules',
+     'C:\\Users\\ColeChamberlain\\node_modules',
+     'C:\\Users\\node_modules' ] }
+pack: {"filePath":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\fake-package","destDir":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\prebuilt\\win32\\x64\\v6.2.2","prebuiltPackagePath":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\prebuilt\\win32\\x64\\v6.2.2\\fake-package","zipFrom":"./node_modules/fake-package/*","zipTo":"prebuilt/win32/x64/v6.2.2/fake-package.7z","nodeModulePath":"../node_modules/fake-package/"}
+file copied, starting 7z of ./node_modules/fake-package/* to prebuilt/win32/x64/v6.2.2/fake-package.7z
+progress: 7z'ing files []
+progress: 7z'ing files []
+7zip completed, cleaning package
+TESTING PATHS => C:\Users\ColeChamberlain\noderaider\prebuilt\test\node_modules\fake-package, C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package, C:\Users\ColeChamberlain\noderaider\node_modules\fake-package, C:\Users\ColeChamberlain\node_modules\fake-package, C:\Users\node_modules\fake-package
+module => Module {
+  id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\lib\\index.js',
+  exports: 
+   { pack: [Function: pack],
+     install: [Function: install],
+     query: [Function: query] },
+  parent: 
+   Module {
+     id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\test\\lib.js',
+     exports: {},
+     parent: 
+      Module {
+        id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\mocha\\lib\\mocha.js',
+        exports: [Object],
+        parent: [Object],
+        filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\mocha\\lib\\mocha.js',
+        loaded: true,
+        children: [Object],
+        paths: [Object] },
+     filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\test\\lib.js',
+     loaded: true,
+     children: [ [Object], [Object], [Object], [Object], [Object], [Circular] ],
+     paths: 
+      [ 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\test\\node_modules',
+        'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules',
+        'C:\\Users\\ColeChamberlain\\noderaider\\node_modules',
+        'C:\\Users\\ColeChamberlain\\node_modules',
+        'C:\\Users\\node_modules' ] },
+  filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\lib\\index.js',
+  loaded: true,
+  children: 
+   [ Module {
+       id: 'C:\\Users\\ColeChamberlain\\noderaider\\es-7z\\lib\\index.js',
+       exports: [Object],
+       parent: [Circular],
+       filename: 'C:\\Users\\ColeChamberlain\\noderaider\\es-7z\\lib\\index.js',
+       loaded: true,
+       children: [Object],
+       paths: [Object] },
+     Module {
+       id: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\ncp\\lib\\ncp.js',
+       exports: [Object],
+       parent: [Circular],
+       filename: 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\ncp\\lib\\ncp.js',
+       loaded: true,
+       children: [],
+       paths: [Object] } ],
+  require: [Function],
+  paths: 
+   [ 'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\lib\\node_modules',
+     'C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules',
+     'C:\\Users\\ColeChamberlain\\noderaider\\node_modules',
+     'C:\\Users\\ColeChamberlain\\node_modules',
+     'C:\\Users\\node_modules' ] }
+pack: {"filePath":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\fake-package","destDir":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\prebuilt\\win32\\x64\\v6.2.2","prebuiltPackagePath":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\prebuilt\\win32\\x64\\v6.2.2\\fake-package","zipFrom":"./node_modules/fake-package/*","zipTo":"prebuilt/win32/x64/v6.2.2/fake-package.7z","nodeModulePath":"../node_modules/fake-package/"}
+file copied, starting 7z of ./node_modules/fake-package/* to prebuilt/win32/x64/v6.2.2/fake-package.7z
+progress: 7z'ing files []
+progress: 7z'ing files []
+7zip completed, cleaning package
+extracting package at prebuilt/win32/x64/v6.2.2/invalid-package.7z to node_modules\invalid-package...
+progress: extracting files []
+extracting package at prebuilt/win32/x64/v6.2.2/fake-package.7z to node_modules\fake-package...
+progress: extracting files []
+progress: extracting files []
+progress: extracting files []
+extraction completed
 # TOC
    - [lib](#lib)
      - [#default](#lib-default)
