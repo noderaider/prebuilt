@@ -73,6 +73,7 @@ export function install(packageName, cwd) {
   const zipFrom = getZipTo(packageName, cwd)
   const packagePath = getPrebuiltPackage(packageName, cwd)
   const installPath = cwd ? path.join(cwd, 'node_modules', packageName) : path.join('node_modules', packageName)
+  console.info(`pack: ${JSON.stringify({ packageName, cwd, zipFrom, packagePath, installPath })}`)
   console.info(`extracting package at ${zipFrom} to ${installPath}...`)
   return extractFull7z(zipFrom, installPath, { exePath })
     .progress(files => console.info(`progress: extracting files ${JSON.stringify(files)}`))
