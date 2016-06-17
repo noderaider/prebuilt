@@ -6,7 +6,7 @@ const access = Promise.promisify(require('fs').access)
 const rimraf = Promise.promisify(require('rimraf'))
 const mkdirp = Promise.promisify(require('mkdirp'))
 const ncp = Promise.promisify(require('ncp').ncp)
-const exePath = path.resolve(__dirname, '..', '7za.exe')
+const exePath = path.resolve(__dirname, '..', 'bin', '7za.exe')
 
 const testPath = x => access(x).then(() => ({ exists: true, resolved: x })).catch(() => ({ exists: false }))
 

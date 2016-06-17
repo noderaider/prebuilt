@@ -12,7 +12,6 @@ import util from 'util'
 import { pack, install } from '../lib'
 
 const should = require('chai').should()
-
 const log = createLogger({ name: 'prebuilt', level: 'info' })
 
 const header = textSync('- prebuilt -', { font: 'Doom' })
@@ -24,14 +23,12 @@ let argv = yargs.usage('usage: $0 [options] package-name')
                 .describe('p', 'pack a prebuilt version of a pack in the node_modules folder for current architecture / node / bitness combination')
                 .alias('i', 'install')
                 .describe('i', 'install a prebuilt pack to the node_modules folder for the current architecture / node / bitness combination')
+                .alias('h', 'help')
                 .help()
                 .strict()
                 .argv
 
-
 const cwd = process.cwd()
-//console.info('bin cwd =>', process.cwd())
-//console.info('bin module =>', util.inspect(module))
 let done = false
 if(argv.pack) {
   console.info(`calling pack for ${argv.pack}`)

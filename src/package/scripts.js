@@ -13,9 +13,10 @@ const babel = (targets = []) => targets.map(([ src, dest, { isDir = true, watch 
 export default ({}) => ({ 'start': 'run-p -lnc build-watch test-watch'
 
                           /** CLEAN EVERYTHING PRE BUILD */
-                        , 'clean': 'run-p clean-lib clean-doc clean-test'
+                        , 'clean': 'run-p -ln clean-lib clean-bin clean-doc clean-test'
                         , 'clean-lib': 'rimraf lib'
                         , 'clean-doc': 'rimraf doc'
+                        , 'clean-bin': 'rimraf bin/prebuilt.js'
                         , 'clean-test': 'rimraf coverage.lcov'
 
                           /** COMPILE */

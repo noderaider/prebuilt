@@ -34,18 +34,15 @@ var _lib = require('../lib');
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var should = require('chai').should();
-
 var log = (0, _bunyan.createLogger)({ name: 'prebuilt', level: 'info' });
 
 var header = (0, _figlet.textSync)('- prebuilt -', { font: 'Doom' });
 
 console.log(_chalk2.default.red(header));
 
-var argv = _yargs2.default.usage('usage: $0 [options] package-name').alias('p', 'pack').describe('p', 'pack a prebuilt version of a pack in the node_modules folder for current architecture / node / bitness combination').alias('i', 'install').describe('i', 'install a prebuilt pack to the node_modules folder for the current architecture / node / bitness combination').help().strict().argv;
+var argv = _yargs2.default.usage('usage: $0 [options] package-name').alias('p', 'pack').describe('p', 'pack a prebuilt version of a pack in the node_modules folder for current architecture / node / bitness combination').alias('i', 'install').describe('i', 'install a prebuilt pack to the node_modules folder for the current architecture / node / bitness combination').alias('h', 'help').help().strict().argv;
 
 var cwd = process.cwd();
-//console.info('bin cwd =>', process.cwd())
-//console.info('bin module =>', util.inspect(module))
 var done = false;
 if (argv.pack) {
   console.info('calling pack for ' + argv.pack);
