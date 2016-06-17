@@ -247,7 +247,6 @@ progress: extracting files []
 extracting package at prebuilt/win32/x64/v6.2.2/fake-package.7z to node_modules\fake-package...
 progress: extracting files []
 progress: extracting files []
-progress: extracting files []
 extraction completed
 # TOC
    - [lib](#lib)
