@@ -7,17 +7,18 @@ const access = Promise.promisify(require('fs').access)
 const rimraf = Promise.promisify(require('rimraf'))
 const mkdirp = Promise.promisify(require('mkdirp'))
 const ncp = Promise.promisify(require('ncp').ncp)
+
+const isWin = process.platform === 'win32'
 const exePath = path.resolve(__dirname, '..', 'bin', '7za.exe')
 
 const testPath = x => access(x).then(() => ({ exists: true, resolved: x })).catch(() => ({ exists: false }))
 
-const getModulePath = (packageName, cwd) => {
+const getModulePath = (packageName, root) => {
   if(!packageName) return Promise.reject(new Error('packageName is required.'))
-  if(cwd) {
-    const relativePath = path.join(cwd, 'node_modules', packageName)
+  if(root) {
+    const relativePath = path.join(root, 'node_modules', packageName)
     return testPath(relativePath)
       .then(result => {
-        console.info(`RESULT => ${JSON.stringify(result)}`)
         if(result.exists)
           return result.resolved
         throw new Error(`Could not locate packageName ${packageName} at ${relativePath}`)
@@ -34,49 +35,77 @@ const getModulePath = (packageName, cwd) => {
     })
 }
 
-const getPrebuiltPath = (cwd) => path.resolve(cwd ? path.join(cwd, 'prebuilt') : 'prebuilt', process.platform, process.arch, process.version)
-const getPrebuiltPackage = (packageName, cwd) => path.resolve(getPrebuiltPath(cwd), packageName)
-const getZipFrom = (packageName, cwd) => `./node_modules/${packageName}/*` //path.relative(__dirname, path.resolve(`${cwd ? `${cwd}/` : ''}`).replace(/\\/g, '/') + '/'
-const getZipTo = (packageName, cwd) => `prebuilt/${process.platform}/${process.arch}/${process.version}/${packageName}.7z`.replace(/\\/g, '/')
+const getPrebuiltPath = (root) => path.resolve(root ? path.join(root, 'prebuilt') : 'prebuilt', process.platform, process.arch, process.version)
+const getPrebuiltPackage = (packageName, root) => path.resolve(getPrebuiltPath(root), packageName)
+const getZipFrom = (packageName, root) => `./node_modules/${packageName}`
+const getZipTo = (packageName, root) => `prebuilt/${process.platform}/${process.arch}/${process.version}/${packageName}.7z`.replace(/\\/g, '/')
 
-export function pack (packageName, cwd = process.cwd()) {
-  if(!packageName) return Promise.reject(new Error('packageName is required.'))
-  return getModulePath(packageName, cwd)
-    .then(filePath => {
-      const destDir = getPrebuiltPath(cwd)
-      const prebuiltPackagePath = getPrebuiltPackage(packageName, cwd)
-      const zipFrom = getZipFrom(packageName, cwd)
-      const zipTo = getZipTo(packageName, cwd)
-      const nodeModulePath = path.relative(__dirname, filePath).replace(/\\/g, '/') + '/'
-      try {
-        console.info('pack: running node-gyp for package')
-        const gypStdio = cp.spawnSync(path.resolve('node_modules', '.bin', 'node-gyp'), [ '--debug', '--release', '--msvs_version=2015' ], { cwd: zipFrom, encoding: 'utf-8' })
-        console.info(`pack: node-gyp finished executing: ${gypStdio}`)
-      } catch(err) {
-        console.error('pack: failure during node-gyp step')
-        throw err
-      }
-      return mkdirp(destDir)
-        .then(() => {
-          //console.info(`file copied, starting 7z of ${zipFrom} to ${zipTo}`)
-          return add7z(zipTo, zipFrom, { exePath })
-            //.progress(files => console.info(`progress: 7z'ing files ${JSON.stringify(files)}`))
-            .then(() => {
-              //console.info('7zip completed, cleaning package')
-            })
-            .catch(err => {
-              console.error(util.inspect(err), '7-zip error occurred')
-              throw err
-            })
-        })
-    })
+function executeGyp(commands, { msvs_version = 2015, cwd }) {
+  return new Promise((resolve, reject) => {
+    const { error, stdio, stdout, status, signal, output  } = cp.spawnSync(path.resolve(__dirname, '..', 'node_modules', '.bin', `node-gyp${isWin ? '.cmd' : ''}`), [ ...commands, `--msvs_version=${msvs_version}` ], { cwd: path.resolve(cwd), encoding: 'utf8' })
+    if(error)
+      return reject(error)
+    resolve(stdio)
+  })
 }
 
-export function install(packageName, cwd = process.cwd()) {
+function gypClean({ msvs_version, cwd } = {}) {
+  console.info(`running node-gyp clean for package at ${cwd}`)
+  return executeGyp([ 'clean' ], { msvs_version, cwd })
+}
+
+function gypConfigure({ msvs_version, cwd } = {}) {
+  console.info(`running node-gyp configure for package at ${cwd}`)
+  return executeGyp([ 'configure' ], { msvs_version, cwd })
+}
+
+function gypBuild(isDebug, { msvs_version, cwd } = {}) {
+  console.info(`running node-gyp build for package at ${cwd} in ${isDebug ? 'debug' : 'release'} mode`)
+  return executeGyp([ 'build', isDebug ? '--debug' : '--release' ], { msvs_version, cwd })
+}
+
+export function pack (packageName, { root = process.cwd() } = {}) {
   if(!packageName) return Promise.reject(new Error('packageName is required.'))
-  const zipFrom = getZipTo(packageName, cwd)
-  const packagePath = getPrebuiltPackage(packageName, cwd)
-  const installPath = path.join(cwd, 'node_modules', packageName)
+  return getModulePath(packageName, root)
+    .then(filePath => {
+      const destDir = getPrebuiltPath(root)
+      const prebuiltPackagePath = getPrebuiltPackage(packageName, root)
+      const zipFrom = getZipFrom(packageName, root)
+      const zipTo = getZipTo(packageName, root)
+      const nodeModulePath = path.relative(__dirname, filePath).replace(/\\/g, '/') + '/'
+      const gypOpts = { msvs_version: 2015, cwd: path.resolve(zipFrom) }
+      return gypClean(gypOpts)
+        .then(() => gypConfigure(gypOpts))
+        .then(() => gypBuild(true, gypOpts))
+        .then(() => gypBuild(false, gypOpts))
+        .catch(err => {
+          console.error('pack: error occurred during node-gyp step')
+          throw err
+        })
+        .then(() => {
+          console.info('pack: node-gyp finished executing!')
+          return mkdirp(destDir)
+                  .then(() => {
+                    //console.info(`file copied, starting 7z of ${zipFrom} to ${zipTo}`)
+                    return add7z(zipTo, `${zipFrom}/*`, { exePath })
+                      //.progress(files => console.info(`progress: 7z'ing files ${JSON.stringify(files)}`))
+                      .then(() => {
+                        //console.info('7zip completed, cleaning package')
+                      })
+                      .catch(err => {
+                        console.error(util.inspect(err), '7-zip error occurred')
+                        throw err
+                      })
+                  })
+              })
+        })
+}
+
+export function install(packageName, { root = process.cwd() } = {}) {
+  if(!packageName) return Promise.reject(new Error('packageName is required.'))
+  const zipFrom = getZipTo(packageName, root)
+  const packagePath = getPrebuiltPackage(packageName, root)
+  const installPath = path.join(root, 'node_modules', packageName)
   console.info(`extracting package at ${zipFrom} to ${installPath}...`)
   return extractFull7z(zipFrom, installPath, { exePath })
     //.progress(files => console.info(`progress: extracting files ${JSON.stringify(files)}`))

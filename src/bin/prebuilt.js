@@ -28,11 +28,11 @@ let argv = yargs.usage('usage: $0 [options] package-name')
                 .strict()
                 .argv
 
-const cwd = process.cwd()
+const opts = { root: process.cwd() }
 let done = false
 if(argv.pack) {
   console.info(`calling pack for ${argv.pack}`)
-  pack(argv.pack, cwd)
+  pack(argv.pack, opts)
     .then(() => {
       console.info(`${argv.pack} packed successfully!`)
     })
@@ -40,9 +40,9 @@ if(argv.pack) {
       console.error(err, `${argv.pack} error occurred while packing!`)
     })
     .finally(() => { done = true })
-} else if(argv.install, cwd) {
+} else if(argv.install) {
   console.info(`calling install for ${argv.install}`)
-  install(argv.install)
+  install(argv.install, opts)
     .then(() => {
       console.info(`${argv.install} installed successfully!`)
     })
