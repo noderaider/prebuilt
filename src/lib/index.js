@@ -1,6 +1,7 @@
 import Promise from 'bluebird'
 import path from 'path'
 import util from 'util'
+import cp from 'child_process'
 import { add7z, extractFull7z } from 'es-7z'
 const access = Promise.promisify(require('fs').access)
 const rimraf = Promise.promisify(require('rimraf'))
@@ -47,6 +48,14 @@ export function pack (packageName, cwd = process.cwd()) {
       const zipFrom = getZipFrom(packageName, cwd)
       const zipTo = getZipTo(packageName, cwd)
       const nodeModulePath = path.relative(__dirname, filePath).replace(/\\/g, '/') + '/'
+      try {
+        console.info('pack: running node-gyp for package')
+        const gypStdio = cp.spawnSync(path.resolve('node_modules', '.bin', 'node-gyp'), [ '--debug', '--release', '--msvs_version=2015' ], { cwd: zipFrom, encoding: 'utf-8' })
+        console.info(`pack: node-gyp finished executing: ${gypStdio}`)
+      } catch(err) {
+        console.error('pack: failure during node-gyp step')
+        throw err
+      }
       return mkdirp(destDir)
         .then(() => {
           //console.info(`file copied, starting 7z of ${zipFrom} to ${zipTo}`)
@@ -56,7 +65,7 @@ export function pack (packageName, cwd = process.cwd()) {
               //console.info('7zip completed, cleaning package')
             })
             .catch(err => {
-              console.error(util.inspect(err), '7zip error occurred')
+              console.error(util.inspect(err), '7-zip error occurred')
               throw err
             })
         })

@@ -93,6 +93,7 @@
     "eslint": "latest",
     "eslint-plugin-react": "latest",
     "mocha": "latest",
+    "node-gyp": "^3.3.1",
     "npm-run-all": "latest",
     "nyc": "latest",
     "rewire": "latest"
