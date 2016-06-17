@@ -1,10 +1,13 @@
-RESULT => {"exists":false}
-RESULT => {"exists":true,"resolved":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\fake-package"}
-pack: running node-gyp for package
-pack: node-gyp finished executing: [object Object]
-RESULT => {"exists":true,"resolved":"C:\\Users\\ColeChamberlain\\noderaider\\prebuilt\\node_modules\\fake-package"}
-pack: running node-gyp for package
-pack: node-gyp finished executing: [object Object]
+running node-gyp clean for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
+running node-gyp configure for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
+running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in debug mode
+running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in release mode
+pack: node-gyp finished executing!
+running node-gyp clean for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
+running node-gyp configure for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
+running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in debug mode
+running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in release mode
+pack: node-gyp finished executing!
 extracting package at prebuilt/win32/x64/v6.2.2/invalid-package.7z to C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\invalid-package...
 extracting package at prebuilt/win32/x64/v6.2.2/fake-package.7z to C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package...
 # TOC
@@ -68,12 +71,14 @@ return pack('invalid-package').should.be.rejected;
 should pack valid package.
 
 ```js
+this.timeout(5000);
 return pack('fake-package').should.be.fulfilled;
 ```
 
 should create prebuilt.
 
 ```js
+this.timeout(5000);
 pack('fake-package').then(function () {
   return access(fakePackagePath);
 }).catch(function (err) {
