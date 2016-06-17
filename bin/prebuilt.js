@@ -40,25 +40,25 @@ var header = (0, _figlet.textSync)('- prebuilt -', { font: 'Doom' });
 
 console.log(_chalk2.default.red(header));
 
-var argv = _yargs2.default.usage('usage: $0 [options] package-name').alias('p', 'pack').describe('p', 'pack a prebuilt version of a pack in the node_modules folder for current architecture / node / bitness combination').alias('i', 'install').describe('i', 'install a prebuilt pack to the node_modules folder for the current architecture / node / bitness combination').alias('h', 'help').help().strict().argv;
+var argv = _yargs2.default.usage('usage: $0 [options] package-name').alias('p', 'pack').describe('p', 'pack a prebuilt version of a pack in the node_modules folder for current architecture / node / bitness combination').alias('i', 'install').describe('i', 'install a prebuilt pack to the node_modules folder for the current architecture / node / bitness combination').alias('m', 'msvs_version').describe('m', 'the msvs_version to use').default('m', 2015).alias('h', 'help').help().strict().argv;
 
-var opts = { root: process.cwd() };
+var opts = { root: process.cwd(), msvs_version: argv.msvs_version };
 var done = false;
 if (argv.pack) {
   console.info('calling pack for ' + argv.pack);
   (0, _lib.pack)(argv.pack, opts).then(function () {
-    console.info(argv.pack + ' packed successfully!');
+    return console.info(argv.pack + ' packed successfully!');
   }).catch(function (err) {
-    console.error(err, argv.pack + ' error occurred while packing!');
+    return console.error(err, argv.pack + ' error occurred while packing!');
   }).finally(function () {
     done = true;
   });
 } else if (argv.install) {
   console.info('calling install for ' + argv.install);
   (0, _lib.install)(argv.install, opts).then(function () {
-    console.info(argv.install + ' installed successfully!');
+    return console.info(argv.install + ' installed successfully!');
   }).catch(function (err) {
-    console.error(err, argv.install + ' error occurred while installing!');
+    return console.error(err, argv.install + ' error occurred while installing!');
   }).finally(function () {
     done = true;
   });

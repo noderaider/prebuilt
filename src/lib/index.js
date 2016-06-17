@@ -40,7 +40,7 @@ const getPrebuiltPackage = (packageName, root) => path.resolve(getPrebuiltPath(r
 const getZipFrom = (packageName, root) => `./node_modules/${packageName}`
 const getZipTo = (packageName, root) => `prebuilt/${process.platform}/${process.arch}/${process.version}/${packageName}.7z`.replace(/\\/g, '/')
 
-function executeGyp(commands, { msvs_version = 2015, cwd }) {
+function executeGyp(commands, { msvs_version, cwd }) {
   return new Promise((resolve, reject) => {
     const { error, stdio, stdout, status, signal, output  } = cp.spawnSync(path.resolve(__dirname, '..', 'node_modules', '.bin', `node-gyp${isWin ? '.cmd' : ''}`), [ ...commands, `--msvs_version=${msvs_version}` ], { cwd: path.resolve(cwd), encoding: 'utf8' })
     if(error)
@@ -64,7 +64,7 @@ function gypBuild(isDebug, { msvs_version, cwd } = {}) {
   return executeGyp([ 'build', isDebug ? '--debug' : '--release' ], { msvs_version, cwd })
 }
 
-export function pack (packageName, { root = process.cwd() } = {}) {
+export function pack (packageName, { root = process.cwd(), msvs_version = 2015 } = {}) {
   if(!packageName) return Promise.reject(new Error('packageName is required.'))
   return getModulePath(packageName, root)
     .then(filePath => {
@@ -73,7 +73,7 @@ export function pack (packageName, { root = process.cwd() } = {}) {
       const zipFrom = getZipFrom(packageName, root)
       const zipTo = getZipTo(packageName, root)
       const nodeModulePath = path.relative(__dirname, filePath).replace(/\\/g, '/') + '/'
-      const gypOpts = { msvs_version: 2015, cwd: path.resolve(zipFrom) }
+      const gypOpts = { msvs_version, cwd: path.resolve(zipFrom) }
       return gypClean(gypOpts)
         .then(() => gypConfigure(gypOpts))
         .then(() => gypBuild(true, gypOpts))
