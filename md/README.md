@@ -1,4 +1,4 @@
-# prebuilt
+[![NPM](https://raw.githubusercontent.com/noderaider/localsync/master/public/images/prebuilt-cli.png)](https://npmjs.com/packages/prebuilt)
 
 **A simple CLI/API tool to package and deploy prebuilt versions of node_modules packages to bypass gcc node-gyp issues. This is another level up from node-pre-gyp, if one of your target node_modules does not precompile, you can use this to bundle versions of that entire library.**
 

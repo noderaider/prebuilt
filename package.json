@@ -78,7 +78,8 @@
     "ncp": "^2.0.0",
     "es-7z": "latest",
     "rimraf": "^2.5.2",
-    "yargs": "^4.7.1"
+    "yargs": "^4.7.1",
+    "node-gyp": "latest"
   },
   "devDependencies": {
     "babel-cli": "latest",
@@ -93,7 +94,6 @@
     "eslint": "latest",
     "eslint-plugin-react": "latest",
     "mocha": "latest",
-    "node-gyp": "^3.3.1",
     "npm-run-all": "latest",
     "nyc": "latest",
     "rewire": "latest"
