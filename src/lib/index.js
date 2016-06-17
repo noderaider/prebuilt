@@ -14,7 +14,6 @@ const getModulePath = (packageName, cwd) => {
   if(!packageName) return Promise.reject(new Error('packageName is required.'))
   if(cwd) {
     const relativePath = path.join(cwd, 'node_modules', packageName)
-    console.info(`getting module path for ${relativePath}`)
     return testPath(relativePath)
       .then(result => {
         console.info(`RESULT => ${JSON.stringify(result)}`)
@@ -24,8 +23,6 @@ const getModulePath = (packageName, cwd) => {
       })
   }
   const testPaths = module.parent.paths.map(x => path.join(x, packageName))
-  console.info(`TESTING PATHS => ${testPaths.join(', ')}`)
-  console.info('module =>', util.inspect(module))
   return Promise.all(testPaths.map(testPath))
     .then(results => {
       for(let result of results) {
@@ -41,7 +38,7 @@ const getPrebuiltPackage = (packageName, cwd) => path.resolve(getPrebuiltPath(cw
 const getZipFrom = (packageName, cwd) => `./node_modules/${packageName}/*` //path.relative(__dirname, path.resolve(`${cwd ? `${cwd}/` : ''}`).replace(/\\/g, '/') + '/'
 const getZipTo = (packageName, cwd) => `prebuilt/${process.platform}/${process.arch}/${process.version}/${packageName}.7z`.replace(/\\/g, '/')
 
-export function pack (packageName, cwd) {
+export function pack (packageName, cwd = process.cwd()) {
   if(!packageName) return Promise.reject(new Error('packageName is required.'))
   return getModulePath(packageName, cwd)
     .then(filePath => {
@@ -50,15 +47,13 @@ export function pack (packageName, cwd) {
       const zipFrom = getZipFrom(packageName, cwd)
       const zipTo = getZipTo(packageName, cwd)
       const nodeModulePath = path.relative(__dirname, filePath).replace(/\\/g, '/') + '/'
-      console.info(`pack: ${JSON.stringify({ filePath, destDir, prebuiltPackagePath, zipFrom, zipTo, nodeModulePath })}`)
       return mkdirp(destDir)
-        //.then(x => ncp(filePath, prebuiltPackagePath))
         .then(() => {
-          console.info(`file copied, starting 7z of ${zipFrom} to ${zipTo}`)
+          //console.info(`file copied, starting 7z of ${zipFrom} to ${zipTo}`)
           return add7z(zipTo, zipFrom, { exePath })
-            .progress(files => console.info(`progress: 7z'ing files ${JSON.stringify(files)}`))
+            //.progress(files => console.info(`progress: 7z'ing files ${JSON.stringify(files)}`))
             .then(() => {
-              console.info('7zip completed, cleaning package')
+              //console.info('7zip completed, cleaning package')
             })
             .catch(err => {
               console.error(util.inspect(err), '7zip error occurred')
@@ -68,17 +63,16 @@ export function pack (packageName, cwd) {
     })
 }
 
-export function install(packageName, cwd) {
+export function install(packageName, cwd = process.cwd()) {
   if(!packageName) return Promise.reject(new Error('packageName is required.'))
   const zipFrom = getZipTo(packageName, cwd)
   const packagePath = getPrebuiltPackage(packageName, cwd)
-  const installPath = cwd ? path.join(cwd, 'node_modules', packageName) : path.join('node_modules', packageName)
-  console.info(`pack: ${JSON.stringify({ packageName, cwd, zipFrom, packagePath, installPath })}`)
+  const installPath = path.join(cwd, 'node_modules', packageName)
   console.info(`extracting package at ${zipFrom} to ${installPath}...`)
   return extractFull7z(zipFrom, installPath, { exePath })
-    .progress(files => console.info(`progress: extracting files ${JSON.stringify(files)}`))
+    //.progress(files => console.info(`progress: extracting files ${JSON.stringify(files)}`))
     .then(() => {
-      console.info('extraction completed')
+      //console.info('extraction completed!')
     })
     .catch(err => {
       console.error(util.inspect(err), 'extraction error occurred')
@@ -91,5 +85,4 @@ export function install(packageName, cwd) {
 
 export function query(packageName) {
   return Promise.reject('placeholder')
-
 }
