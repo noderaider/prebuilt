@@ -2,6 +2,8 @@
 
 **A simple CLI/API tool to package and deploy prebuilt versions of node_modules packages to bypass gcc node-gyp issues. This is another level up from node-pre-gyp, if one of your target node_modules does not precompile, you can use this to bundle versions of that entire library.**
 
+**Now rewrites package.json of target package to ensure it will not run node-gyp on future installs after it is deployed.**
+
 
 [![Build Status](https://travis-ci.org/noderaider/prebuilt.svg?branch=master)](https://travis-ci.org/noderaider/prebuilt)
 [![codecov](https://codecov.io/gh/noderaider/prebuilt/branch/master/graph/badge.svg)](https://codecov.io/gh/noderaider/prebuilt)
@@ -67,11 +69,13 @@ install('package_name')
 
 **Unit tests output for current release:**
 
+prebuilt: rewriting C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package\package.json to remove node-gyp install step.
 running node-gyp clean for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
 running node-gyp configure for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
 running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in debug mode
 running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in release mode
 pack: node-gyp finished executing!
+prebuilt: rewriting C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package\package.json to remove node-gyp install step.
 running node-gyp clean for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
 running node-gyp configure for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
 running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in debug mode

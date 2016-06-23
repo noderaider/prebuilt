@@ -1,8 +1,10 @@
+prebuilt: rewriting C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package\package.json to remove node-gyp install step.
 running node-gyp clean for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
 running node-gyp configure for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
 running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in debug mode
 running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in release mode
 pack: node-gyp finished executing!
+prebuilt: rewriting C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package\package.json to remove node-gyp install step.
 running node-gyp clean for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
 running node-gyp configure for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package
 running node-gyp build for package at C:\Users\ColeChamberlain\noderaider\prebuilt\node_modules\fake-package in debug mode
