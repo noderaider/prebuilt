@@ -11,6 +11,7 @@ const ncp = Promise.promisify(require('ncp').ncp)
 
 const isWin = process.platform === 'win32'
 const exePath = path.resolve(__dirname, '..', 'bin', '7za.exe')
+const replaceInstallScript = packageName => `echo prebuilt => ${packageName} | platform: ${process.platform} | arch: ${process.arch} | version: ${process.version}`
 
 const testPath = x => access(x).then(() => ({ exists: true, resolved: x })).catch(() => ({ exists: false }))
 
@@ -94,7 +95,7 @@ export function pack (packageName, { root = process.cwd(), msvs_version = 2015 }
         .then(packageJSON => {
           if(packageJSON.scripts && packageJSON.scripts.install) {
             console.info(`prebuilt: rewriting ${packageJSONPath} to remove node-gyp install step.`)
-            delete packageJSON.scripts.install
+            packageJSON.scripts.install = replaceInstallScript(packageName)
             return writeJSON(packageJSONPath, packageJSON)
           }
         })
