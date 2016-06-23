@@ -7,7 +7,6 @@ import { createLogger } from 'bunyan'
 import deasync from 'deasync'
 import { textSync } from 'figlet'
 import chalk from 'chalk'
-import util from 'util'
 
 import { pack, install } from '../lib'
 

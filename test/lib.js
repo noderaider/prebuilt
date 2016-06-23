@@ -4,6 +4,7 @@ import rewire from 'rewire'
 import chai from 'chai'
 chai.use(require('chai-as-promised'))
 const should = chai.should()
+const writeFile = Promise.promisify(require('fs').writeFile)
 const access = Promise.promisify(require('fs').access)
 const rimraf = Promise.promisify(require('rimraf'))
 const mkdirp = Promise.promisify(require('mkdirp'))
@@ -11,6 +12,16 @@ const mkdirp = Promise.promisify(require('mkdirp'))
 describe('lib', () => {
   const lib = rewire('../lib')
   const fakePackagePath = path.resolve(__dirname, '..', 'node_modules', 'fake-package')
+  const fakePackageJSONPath = path.resolve(fakePackagePath, 'package.json')
+  const fakePackageJSON = `{
+  "name": "fake-package",
+  "version": "1.0.0",
+  "scripts": {
+    "install": "THIS BETTER GO AWAY",
+    "other": "THIS SHOULD NOT GO AWAY"
+  }
+}
+`
   //afterEach(done => rimraf('prebuilt').finally(() => { done() }))
 
   it('should exist', () => should.exist(lib))
@@ -21,7 +32,8 @@ describe('lib', () => {
 
   describe('#pack', function () {
     const { pack } = lib
-    beforeEach(done => mkdirp(fakePackagePath).finally(() => { done() }))
+    beforeEach(done => mkdirp(fakePackagePath)
+      .then(() => writeFile(fakePackageJSONPath, fakePackageJSON, 'utf8')).finally(() => { done() }))
     afterEach(done => rimraf(fakePackagePath).finally(() => { done() }))
     it('should exist', () => should.exist(pack))
     it('should be a function', () => pack.should.be.a('function'))
@@ -48,7 +60,8 @@ describe('lib', () => {
 
   describe('#install', function () {
     const { install } = lib
-    beforeEach(done => mkdirp(fakePackagePath).finally(() => { done() }))
+    beforeEach(done => mkdirp(fakePackagePath)
+      .then(() => writeFile(fakePackageJSONPath, fakePackageJSON, 'utf8')).finally(() => { done() }))
     afterEach(done => rimraf(fakePackagePath).finally(() => { done() }))
     it('should exist', () => should.exist(install))
     it('should be a function', () => install.should.be.a('function'))
@@ -60,7 +73,8 @@ describe('lib', () => {
 
   xdescribe('#query', function() {
     const { query } = lib
-    beforeEach(done => mkdirp(fakePackagePath).finally(() => { done() }))
+    beforeEach(done => mkdirp(fakePackagePath)
+      .then(() => writeFile(fakePackageJSONPath, fakePackageJSON, 'utf8')).finally(() => { done() }))
     afterEach(done => rimraf(fakePackagePath).finally(() => { done() }))
     it('should exist', () => should.exist(query))
     it('should be a function', () => query.should.be.a('function'))

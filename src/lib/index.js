@@ -1,8 +1,9 @@
 import Promise from 'bluebird'
 import path from 'path'
-import util from 'util'
 import cp from 'child_process'
 import { add7z, extractFull7z } from 'es-7z'
+const readFile = Promise.promisify(require('fs').readFile)
+const writeFile = Promise.promisify(require('fs').writeFile)
 const access = Promise.promisify(require('fs').access)
 const rimraf = Promise.promisify(require('rimraf'))
 const mkdirp = Promise.promisify(require('mkdirp'))
@@ -40,6 +41,26 @@ const getPrebuiltPackage = (packageName, root) => path.resolve(getPrebuiltPath(r
 const getZipFrom = (packageName, root) => `./node_modules/${packageName}`
 const getZipTo = (packageName, root) => `prebuilt/${process.platform}/${process.arch}/${process.version}/${packageName}.7z`.replace(/\\/g, '/')
 
+const readJSON = (jsonPath, fallback) => {
+  return readFile(jsonPath, 'utf8')
+    .then(data => JSON.parse(data))
+    .catch(err => {
+      console.error(err, `prebuilt: error reading file at ${jsonPath}.`)
+      if(fallback)
+        return fallback(err)
+      throw err
+    })
+}
+
+const writeJSON = (jsonPath, json) => {
+  return writeFile(jsonPath, JSON.stringify(json, null, 2), 'utf8')
+    .catch(err => {
+      console.error(err, `prebuilt: error writing file at ${jsonPath}.`)
+      throw err
+    })
+}
+
+
 function executeGyp(commands, { msvs_version, cwd }) {
   return new Promise((resolve, reject) => {
     const { error, stdio, stdout, status, signal, output  } = cp.spawnSync(path.resolve(cwd, '..', '.bin', `node-gyp${isWin ? '.cmd' : ''}`), [ ...commands, `--msvs_version=${msvs_version}` ], { cwd: path.resolve(cwd), encoding: 'utf8' })
@@ -67,37 +88,48 @@ function gypBuild(isDebug, { msvs_version, cwd } = {}) {
 export function pack (packageName, { root = process.cwd(), msvs_version = 2015 } = {}) {
   if(!packageName) return Promise.reject(new Error('packageName is required.'))
   return getModulePath(packageName, root)
-    .then(filePath => {
-      const destDir = getPrebuiltPath(root)
-      const prebuiltPackagePath = getPrebuiltPackage(packageName, root)
-      const zipFrom = getZipFrom(packageName, root)
-      const zipTo = getZipTo(packageName, root)
-      const nodeModulePath = path.relative(__dirname, filePath).replace(/\\/g, '/') + '/'
-      const gypOpts = { msvs_version, cwd: path.resolve(zipFrom) }
-      return gypClean(gypOpts)
-        .then(() => gypConfigure(gypOpts))
-        .then(() => gypBuild(true, gypOpts))
-        .then(() => gypBuild(false, gypOpts))
-        .catch(err => {
-          console.error('pack: error occurred during node-gyp step')
-          throw err
+    .then(packagePath => {
+      const packageJSONPath = path.join(packagePath, 'package.json')
+      return readJSON(packageJSONPath)
+        .then(packageJSON => {
+          if(packageJSON.scripts && packageJSON.scripts.install) {
+            console.info(`prebuilt: rewriting ${packageJSONPath} to remove node-gyp install step.`)
+            delete packageJSON.scripts.install
+            return writeJSON(packageJSONPath, packageJSON)
+          }
         })
         .then(() => {
-          console.info('pack: node-gyp finished executing!')
-          return mkdirp(destDir)
-                  .then(() => {
-                    //console.info(`file copied, starting 7z of ${zipFrom} to ${zipTo}`)
-                    return add7z(zipTo, `${zipFrom}/*`, { exePath })
-                      //.progress(files => console.info(`progress: 7z'ing files ${JSON.stringify(files)}`))
+          const destDir = getPrebuiltPath(root)
+          const prebuiltPackagePath = getPrebuiltPackage(packageName, root)
+          const zipFrom = getZipFrom(packageName, root)
+          const zipTo = getZipTo(packageName, root)
+          const nodeModulePath = path.relative(__dirname, packagePath).replace(/\\/g, '/') + '/'
+          const gypOpts = { msvs_version, cwd: path.resolve(zipFrom) }
+          return gypClean(gypOpts)
+            .then(() => gypConfigure(gypOpts))
+            .then(() => gypBuild(true, gypOpts))
+            .then(() => gypBuild(false, gypOpts))
+            .catch(err => {
+              console.error('pack: error occurred during node-gyp step')
+              throw err
+            })
+            .then(() => {
+              console.info('pack: node-gyp finished executing!')
+              return mkdirp(destDir)
                       .then(() => {
-                        //console.info('7zip completed, cleaning package')
-                      })
-                      .catch(err => {
-                        console.error(util.inspect(err), '7-zip error occurred')
-                        throw err
+                        //console.info(`file copied, starting 7z of ${zipFrom} to ${zipTo}`)
+                        return add7z(zipTo, `${zipFrom}/*`, { exePath })
+                          //.progress(files => console.info(`progress: 7z'ing files ${JSON.stringify(files)}`))
+                          .then(() => {
+                            //console.info('7zip completed, cleaning package')
+                          })
+                          .catch(err => {
+                            console.error(err, '7-zip error occurred')
+                            throw err
+                          })
                       })
                   })
-              })
+            })
         })
 }
 
@@ -113,7 +145,7 @@ export function install(packageName, { root = process.cwd() } = {}) {
       //console.info('extraction completed!')
     })
     .catch(err => {
-      console.error(util.inspect(err), 'extraction error occurred')
+      console.error(err, 'extraction error occurred')
       throw err
     })
 
