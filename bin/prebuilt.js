@@ -36,7 +36,7 @@ var header = (0, _figlet.textSync)('- prebuilt -', { font: 'Doom' });
 
 console.log(_chalk2.default.red(header));
 
-var argv = _yargs2.default.usage('usage: $0 [options] package-name').alias('p', 'pack').describe('p', 'pack a prebuilt version of a pack in the node_modules folder for current architecture / node / bitness combination').alias('i', 'install').describe('i', 'install a prebuilt pack to the node_modules folder for the current architecture / node / bitness combination').alias('m', 'msvs_version').describe('m', 'the msvs_version to use').default('m', 2015).alias('h', 'help').help().strict().argv;
+var argv = _yargs2.default.usage('usage: $0 [options] package-name').alias('p', 'pack').describe('p', 'pack a prebuilt version of a pack in the node_modules folder for current architecture / node / bitness combination').alias('i', 'install').describe('i', 'install a prebuilt pack to the node_modules folder for the current architecture / node / bitness combination').alias('r', 'repack').describe('r', 'repack all packed packages with the latest version of prebuilt').alias('m', 'msvs_version').describe('m', 'the msvs_version to use').default('m', 2015).alias('h', 'help').help().strict().argv;
 
 var opts = { root: process.cwd(), msvs_version: argv.msvs_version };
 var done = false;
@@ -49,6 +49,8 @@ if (argv.pack) {
   }).finally(function () {
     done = true;
   });
+} else if (argv.repack) {
+  console.warn('NOT YET IMPLEMENTED');
 } else if (argv.install) {
   console.info('calling install for ' + argv.install);
   (0, _lib.install)(argv.install, opts).then(function () {
