@@ -1,6 +1,6 @@
 {
   "name": "prebuilt",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Package and deploy prebuilt versions of node_modules to bypass gcc node-gyp issues.",
   "main": "lib/index.js",
   "bin": {
